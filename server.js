@@ -19,7 +19,7 @@ app.set("views", path.join(__dirname, "src/views"));
 
 //server static files from the public directory
 app.use(express.static(path.join(__dirname, "public")));
-
+  
 app.get("/", async (req, res) => {
   const title = "Home";
   res.render("home", { title });
@@ -33,6 +33,11 @@ app.get("/organizations", (req, res) => {
 app.get("/projects", (req, res) => {
   const title = "Service Projects";
   res.render("projects", { title });
+});
+
+app.get("/categories", (req, res) => {
+  const title = "Service Project Categories";
+  res.render("categories", { title });
 });
 
 app.listen(PORT, () => {
