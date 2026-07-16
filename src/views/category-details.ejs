@@ -1,11 +1,11 @@
 <%- include('partials/header') %>
     <main>
         <h1><%= title %></h1>
-        <h2>Upcoming Service Projects</h2>
+        <h2>Service Projects in <%= category.name %></h2>
         <ul>
             <% projects.forEach(project => { %>
                 <li>
-                    <a href="/project/<%= project.id %>"><%= project.name %></a> - <%= project.description %>
+                    <a href="/project/<%= project.id %>"><%= project.name %></a>
                 </li>
             <% }) %>
         </ul>
