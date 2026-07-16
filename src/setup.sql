@@ -45,6 +45,17 @@ SELECT * FROM service_project
 --   ('Food Drive', 'Help collect and distribute food to those in need.'),
 --   ('Community Tutoring', 'Volunteer to tutor students in various subjects.');
 
+-- Each service project belongs to a partner organization and has a scheduled
+-- date so the projects page can list the next upcoming events.
+-- ALTER TABLE service_project
+--   ADD COLUMN organization_id INT NOT NULL REFERENCES organization (id);
+-- ALTER TABLE service_project
+--   ADD COLUMN event_date DATE NOT NULL;
+
+-- UPDATE service_project SET organization_id = 1, event_date = '2026-07-25' WHERE id = 1; -- Park Cleanup      -> BrightFuture Builders
+-- UPDATE service_project SET organization_id = 3, event_date = '2026-08-05' WHERE id = 2; -- Food Drive        -> UnityServe Volunteers
+-- UPDATE service_project SET organization_id = 2, event_date = '2026-08-20' WHERE id = 3; -- Community Tutoring -> GreenHarvest Growers
+
 SELECT * FROM category
 
 -- -- Categories a service project can be classified under.

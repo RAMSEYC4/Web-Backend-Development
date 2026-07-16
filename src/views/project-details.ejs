@@ -1,10 +1,15 @@
 <%- include('partials/header') %>
     <main>
         <h1><%= title %></h1>
+        <p>
+            Organized by
+            <a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a>
+            &mdash; <%= new Date(project.event_date).toLocaleDateString() %>
+        </p>
         <p><%= project.description %></p>
 
         <h2>Categories</h2>
-        <ul>
+        <ul class="tags">
             <% categories.forEach(category => { %>
                 <li>
                     <a href="/category/<%= category.id %>"><%= category.name %></a>

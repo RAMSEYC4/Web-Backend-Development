@@ -10,7 +10,6 @@ const projectsPage = async (req, res) => {
 const projectDetailsPage = async (req, res, next) => {
   const id = req.params.id;
   const project = await getProjectById(id);
-
   // If no project was found, show a 404 page.
   if (!project) {
     const err = new Error("Project Not Found");
