@@ -72,9 +72,77 @@ const getProjectsForOrganization = async (organizationId) => {
   return result.rows;
 };
 
+/**
+ * Creates a new service project in the database.
+ * @param {string} name - The name of the project.
+ * @param {string} description - A description of the project.
+ * @param {string} eventDate - The scheduled date of the project (YYYY-MM-DD).
+ * @param {string} organizationId - The id of the partner organization.
+ * @returns {string} The id of the newly created project record.
+ */
+const createProject = async (name, description, eventDate, organizationId) => {
+  const query = `
+      INSERT INTO service_project (name, description, event_date, organization_id)
+      VALUES ($1, $2, $3, $4)
+      RETURNING id
+    `;
+
+  const queryParams = [name, description, eventDate, organizationId];
+  const result = await db.query(query, queryParams);
+
+  if (result.rows.length === 0) {
+    throw new Error("Failed to create project");
+  }
+
+  if (process.env.ENABLE_SQL_LOGGING === "true") {
+    console.log("Created new project with ID:", result.rows[0].id);
+  }
+
+  return result.rows[0].id;
+};
+
+/**
+ * Updates an existing service project in the database.
+ * @param {string} id - The id of the project to update.
+ * @param {string} name - The name of the project.
+ * @param {string} description - A description of the project.
+ * @param {string} eventDate - The scheduled date of the project (YYYY-MM-DD).
+ * @param {string} organizationId - The id of the partner organization.
+ * @returns {string} The id of the updated project record.
+ */
+const updateProject = async (
+  id,
+  name,
+  description,
+  eventDate,
+  organizationId,
+) => {
+  const query = `
+      UPDATE service_project
+      SET name = $1, description = $2, event_date = $3, organization_id = $4
+      WHERE id = $5
+      RETURNING id
+    `;
+
+  const queryParams = [name, description, eventDate, organizationId, id];
+  const result = await db.query(query, queryParams);
+
+  if (result.rows.length === 0) {
+    throw new Error("Project not found");
+  }
+
+  if (process.env.ENABLE_SQL_LOGGING === "true") {
+    console.log("Updated project with ID:", result.rows[0].id);
+  }
+
+  return result.rows[0].id;
+};
+
 export {
   getAllProjects,
   getProjectById,
   getProjectsForCategory,
   getProjectsForOrganization,
+  createProject,
+  updateProject,
 };

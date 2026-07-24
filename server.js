@@ -1,5 +1,7 @@
 import "dotenv/config";
 import express from "express";
+import session from "express-session";
+import flash from "connect-flash";
 import { fileURLToPath } from "url";
 import path from "path";
 import { testConnection } from "./src/models/db.js";
@@ -19,8 +21,28 @@ app.set("view engine", "ejs");
 // Tell Express where to find your templates
 app.set("views", path.join(__dirname, "src/views"));
 
+// Allow Express to receive and process common POST data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 //server static files from the public directory
 app.use(express.static(path.join(__dirname, "public")));
+
+// Set up session and flash messaging
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "dev-secret",
+    resave: false,
+    saveUninitialized: false,
+  }),
+);
+app.use(flash());
+
+// Expose flash messages to all templates
+app.use((req, res, next) => {
+  res.locals.messages = req.flash();
+  next();
+});
 
 app.use((req, res, next) => {
   if (NODE_ENV === "development") {

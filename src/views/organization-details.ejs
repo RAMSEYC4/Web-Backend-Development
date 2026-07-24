@@ -8,6 +8,7 @@
             Contact:
             <a href="mailto:<%= organization.contact_email %>"><%= organization.contact_email %></a>
         </p>
+        <p><a href="/edit-organization/<%= organization.id %>">Edit Organization</a></p>
 
         <h2>Service Projects</h2>
         <% if (projects.length > 0) { %>
