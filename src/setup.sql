@@ -7,7 +7,7 @@
 -- );
 
 
-SELECT * FROM organization
+-- SELECT * FROM organization
 
 -- INSERT INTO organization (name, description, contact_email, logo_filename)
 -- VALUES 
@@ -30,7 +30,7 @@ SELECT * FROM organization
 --   'unityserve-logo.png'
 -- );
 
-SELECT * FROM service_project 
+-- SELECT * FROM service_project 
 
 -- Service projects that volunteers can join.
 -- CREATE TABLE service_project (
@@ -56,7 +56,7 @@ SELECT * FROM service_project
 -- UPDATE service_project SET organization_id = 3, event_date = '2026-08-05' WHERE id = 2; -- Food Drive        -> UnityServe Volunteers
 -- UPDATE service_project SET organization_id = 2, event_date = '2026-08-20' WHERE id = 3; -- Community Tutoring -> GreenHarvest Growers
 
-SELECT * FROM category
+-- SELECT * FROM category
 
 -- -- Categories a service project can be classified under.
 -- CREATE TABLE category (
