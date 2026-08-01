@@ -82,12 +82,11 @@ VALUES (1, 1),
     (2, 4),
     (3, 2);
 SELECT *
-FROM CATEGORY
+FROM organization;
 SELECT *
-FROM organization
-SELECT *
-FROM category --============================================
-    -- week 5 work 
+FROM category;
+--============================================
+    -- week 5 work
     CREATE TABLE roles (
         role_id SERIAL PRIMARY KEY,
         role_name VARCHAR(50) UNIQUE NOT NULL,
@@ -121,3 +120,27 @@ JOIN roles r ON u.role_id = r.role_id;
 
 -- Delete the test user
 DELETE FROM users WHERE email = 'test@example.com';
+
+--============================================
+-- week 6 work
+-- Promote a user to the admin role
+UPDATE users
+SET role_id = (SELECT role_id FROM roles WHERE role_name = 'admin')
+WHERE email = 'cramsey@byupathway.edu';
+
+-- Dedicated admin testing account for the grader.
+-- Username: admin@example.com   Password: cse340!
+-- The password_hash below is the bcrypt hash of 'cse340!'.
+INSERT INTO users (name, email, password_hash, role_id)
+VALUES (
+        'Admin Tester',
+        'admin@example.com',
+        '$2b$10$ZP0O9maqBVzkxlGbfjQq.Oy5dG4HMqBOQrWwWVnTHfbZuRhQ1FuFi',
+        (SELECT role_id FROM roles WHERE role_name = 'admin')
+    ) ON CONFLICT (email) DO NOTHING;
+
+-- Show every registered user with their role (what the /users page displays)
+SELECT users.user_id, users.name, users.email, roles.role_name
+FROM users
+JOIN roles ON users.role_id = roles.role_id
+ORDER BY users.name;

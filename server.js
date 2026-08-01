@@ -55,8 +55,12 @@ app.use((req, res, next) => {
 // can be shown or hidden based on who is logged in.
 app.use((req, res, next) => {
     res.locals.isLoggedIn = false;
+    res.locals.isAdmin = false;
+    res.locals.currentUser = null;
     if (req.session && req.session.user) {
         res.locals.isLoggedIn = true;
+        res.locals.currentUser = req.session.user;
+        res.locals.isAdmin = req.session.user.role_name === "admin";
     }
     res.locals.NODE_ENV = NODE_ENV;
     next();
