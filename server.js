@@ -51,6 +51,8 @@ app.use((req, res, next) => {
   next();
 });
 
+// Expose the authentication state to all templates so navigation links
+// can be shown or hidden based on who is logged in.
 app.use((req, res, next) => {
     res.locals.isLoggedIn = false;
     if (req.session && req.session.user) {

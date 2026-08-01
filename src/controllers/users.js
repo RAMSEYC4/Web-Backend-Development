@@ -1,7 +1,5 @@
 import bcrypt from "bcrypt";
-import { createUser } from "../models/users.js";
-import { authenticateUser } from "../models/users.js";
-import { getAllusers } from "../models/users.js";
+import { createUser, authenticateUser, getAllUsers } from "../models/users.js";
 
 const showUserRegistrationForm = (req, res) => {
   res.render("register", { title: "Register" });
@@ -14,16 +12,21 @@ const processUserRegistrationForm = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
     // Create the user in the database
-    const userId = await createUser(name, email, passwordHash);
-    // Redirect to the home page after successful registration
+    await createUser(name, email, passwordHash);
+    // Redirect to the login page after successful registration
     req.flash("success", "Registration successful! Please log in.");
-    res.redirect("/");
+    res.redirect("/login");
   } catch (error) {
     console.error("Error registering user:", error);
-    req.flash(
-      "error",
-      "An error occurred during registration. Please try again.",
-    );
+    // 23505 is the Postgres unique-violation code (the email is already taken)
+    if (error.code === "23505") {
+      req.flash("error", "An account with that email already exists.");
+    } else {
+      req.flash(
+        "error",
+        "An error occurred during registration. Please try again.",
+      );
+    }
     res.redirect("/register");
   }
 };
@@ -72,13 +75,23 @@ const requireLogin = (req, res, next) => {
   next();
 };
 
-const requireAdmin = (req, res, next) => {
-  if (req.session.user.role_name === "admin") {
+// Returns middleware that only lets users with the given role continue.
+const requireRole = (roleName) => {
+  return (req, res, next) => {
+    const user = req.session && req.session.user;
+
+    if (!user) {
+      req.flash("error", "You must be logged in to access that page.");
+      return res.redirect("/login");
+    }
+
+    if (user.role_name !== roleName) {
+      req.flash("error", "You do not have permission to access that page.");
+      return res.redirect("/dashboard");
+    }
+
     next();
-  } else {
-    req.flash("error", "You do not have permission to access that page.");
-    res.redirect("/dashboard");
-  }
+  };
 };
 
 const showDashboard = (req, res) => {
@@ -92,8 +105,8 @@ const showDashboard = (req, res) => {
 };
 
 const showUserPage = async (req, res) => {
-  const users = await getAllusers();
-  const title = "All users registered";
+  const users = await getAllUsers();
+  const title = "Registered Users";
   res.render("users", { title, users });
 };
 
@@ -104,7 +117,7 @@ export {
   processLogout,
   processLoginForm,
   requireLogin,
+  requireRole,
   showDashboard,
   showUserPage,
-  requireAdmin
 };

@@ -2,12 +2,28 @@
 
 <main>
     <h1><%= title %></h1>
+<<<<<<< HEAD
     <p>Name: <%= name %></p>
     <p>Username: <%= email %></p>
 
     <% if (role === "admin") { %>
+=======
+    <p>Welcome back, <%= name %>!</p>
+
+    <h2>Your Account</h2>
+    <p>Name: <%= name %></p>
+    <p>Username: <%= email %></p>
+    <p>Role: <%= role %></p>
+
+    <% if (role === "admin") { %>
+        <h2>Administration</h2>
+>>>>>>> 8ee27eb (August 1 site update)
         <p><a href="/users">View all registered users</a></p>
     <% } %>
 </main>
 
+<<<<<<< HEAD
 <%- include('partials/footer') %>
+=======
+<%- include('partials/footer') %>
+>>>>>>> 8ee27eb (August 1 site update)

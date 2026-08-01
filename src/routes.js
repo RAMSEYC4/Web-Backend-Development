@@ -38,10 +38,17 @@ import {
   processLoginForm,
   processLogout,
   requireLogin,
+<<<<<<< HEAD
   showDashboard,
   showUserPage,
   requireAdmin,
 } from "../src/controllers/users.js";
+=======
+  requireRole,
+  showDashboard,
+  showUserPage,
+} from "./controllers/users.js";
+>>>>>>> 8ee27eb (August 1 site update)
 
 const router = express.Router();
 
@@ -103,7 +110,7 @@ router.get("/logout", processLogout);
 // Protected dashboard route
 router.get("/dashboard", requireLogin, showDashboard);
 
-//get all users
-router.get("/users", requireLogin, requireAdmin, showUserPage);
+// Protected users route - admins only
+router.get("/users", requireLogin, requireRole("admin"), showUserPage);
 
 export default router;
