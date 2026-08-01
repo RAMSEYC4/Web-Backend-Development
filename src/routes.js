@@ -38,17 +38,10 @@ import {
   processLoginForm,
   processLogout,
   requireLogin,
-<<<<<<< HEAD
-  showDashboard,
-  showUserPage,
-  requireAdmin,
-} from "../src/controllers/users.js";
-=======
   requireRole,
   showDashboard,
   showUserPage,
 } from "./controllers/users.js";
->>>>>>> 8ee27eb (August 1 site update)
 
 const router = express.Router();
 

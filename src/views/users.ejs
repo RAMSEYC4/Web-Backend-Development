@@ -1,28 +1,4 @@
 <%- include('partials/header') %>
-<<<<<<< HEAD
-    <main>
-        <h1><%= title %></h1>
-        <p>All registered users:</p>
-        <table class="user-list">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% users.forEach(user => { %>
-                    <tr>
-                        <td><%= user.name %></td>
-                        <td><%= user.email %></td>
-                        <td><%= user.role_name %></td>
-                    </tr>
-                <% }) %>
-            </tbody>
-        </table>
-    </main>
-=======
 
 <main>
     <h1><%= title %></h1>
@@ -49,6 +25,5 @@
 
     <p><a href="/dashboard">Back to dashboard</a></p>
 </main>
->>>>>>> 8ee27eb (August 1 site update)
 
 <%- include('partials/footer') %>
