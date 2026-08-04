@@ -16,10 +16,12 @@
                 </li>
             <% }) %>
         </ul>
-        <p>
-            <a href="/edit-project/<%= project.id %>">Edit Project</a>
-            &mdash;
-            <a href="/assign-categories/<%= project.id %>">Edit Categories</a>
-        </p>
+        <% if (isAdmin) { %>
+            <p>
+                <a href="/edit-project/<%= project.id %>">Edit Project</a>
+                &mdash;
+                <a href="/assign-categories/<%= project.id %>">Edit Categories</a>
+            </p>
+        <% } %>
     </main>
 <%- include('partials/footer') %>

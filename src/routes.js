@@ -45,6 +45,12 @@ import {
 
 const router = express.Router();
 
+// Only a logged-in administrator may add, edit or assign content. Every
+// route below that changes data is guarded with this pair of middleware,
+// so the protection cannot be bypassed by typing the URL directly.
+const adminOnly = [requireLogin, requireRole("admin")];
+
+// Public read-only routes
 router.get("/", index);
 router.get("/organizations", organizationsPage);
 router.get("/organization/:id", organizationDetailsPage);
@@ -52,44 +58,72 @@ router.get("/projects", projectsPage);
 router.get("/project/:id", projectDetailsPage);
 router.get("/categories", categoriesPage);
 router.get("/category/:id", categoryDetailsPage);
-router.get("/new-organization", showNewOrganizationForm);
+
+// Route for new organization page - admins only
+router.get("/new-organization", adminOnly, showNewOrganizationForm);
+// Route to handle new organization form submission - admins only
 router.post(
   "/new-organization",
+  adminOnly,
   organizationValidation,
   processNewOrganizationForm,
 );
 
 // error-handling routes
 router.get("/test-error", testErrorPage);
-router.get("/edit-organization/:id", showEditOrganizationForm);
+
+// Route for edit organization page - admins only
+router.get("/edit-organization/:id", adminOnly, showEditOrganizationForm);
+// Route to handle edit organization form submission - admins only
 router.post(
   "/edit-organization/:id",
+  adminOnly,
   organizationValidation,
   processEditOrganizationForm,
 );
-// Route for new project page
-router.get("/new-project", showNewProjectForm);
-// Route to handle new project form submission
-router.post("/new-project", projectValidation, processNewProjectForm);
 
-// Route for edit project page
-router.get("/edit-project/:id", showEditProjectForm);
-// Route to handle edit project form submission
-router.post("/edit-project/:id", projectValidation, processEditProjectForm);
+// Route for new project page - admins only
+router.get("/new-project", adminOnly, showNewProjectForm);
+// Route to handle new project form submission - admins only
+router.post("/new-project", adminOnly, projectValidation, processNewProjectForm);
 
-// Route for new category page
-router.get("/new-category", showNewCategoryForm);
-// Route to handle new category form submission
-router.post("/new-category", categoryValidation, processNewCategoryForm);
+// Route for edit project page - admins only
+router.get("/edit-project/:id", adminOnly, showEditProjectForm);
+// Route to handle edit project form submission - admins only
+router.post(
+  "/edit-project/:id",
+  adminOnly,
+  projectValidation,
+  processEditProjectForm,
+);
 
-// Route for edit category page
-router.get("/edit-category/:id", showEditCategoryForm);
-// Route to handle edit category form submission
-router.post("/edit-category/:id", categoryValidation, processEditCategoryForm);
+// Route for new category page - admins only
+router.get("/new-category", adminOnly, showNewCategoryForm);
+// Route to handle new category form submission - admins only
+router.post(
+  "/new-category",
+  adminOnly,
+  categoryValidation,
+  processNewCategoryForm,
+);
 
-// Routes to handle the assign categories to project form
-router.get("/assign-categories/:projectId", showAssignCategoriesForm);
-router.post("/assign-categories/:projectId", processAssignCategoriesForm);
+// Route for edit category page - admins only
+router.get("/edit-category/:id", adminOnly, showEditCategoryForm);
+// Route to handle edit category form submission - admins only
+router.post(
+  "/edit-category/:id",
+  adminOnly,
+  categoryValidation,
+  processEditCategoryForm,
+);
+
+// Routes to handle the assign categories to project form - admins only
+router.get("/assign-categories/:projectId", adminOnly, showAssignCategoriesForm);
+router.post(
+  "/assign-categories/:projectId",
+  adminOnly,
+  processAssignCategoriesForm,
+);
 
 // User registration routes
 router.get("/register", showUserRegistrationForm);
