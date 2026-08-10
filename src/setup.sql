@@ -144,3 +144,27 @@ SELECT users.user_id, users.name, users.email, roles.role_name
 FROM users
 JOIN roles ON users.role_id = roles.role_id
 ORDER BY users.name;
+
+--============================================
+-- week 7 work
+-- USER <-> SERVICE PROJECT (many-to-many)
+-- Tracks which users have volunteered for which service projects. The
+-- composite primary key lets one user volunteer for many projects and one
+-- project have many volunteers, while making a duplicate sign-up impossible.
+CREATE TABLE project_volunteer (
+    user_id INT NOT NULL REFERENCES users (user_id) ON DELETE CASCADE,
+    project_id INT NOT NULL REFERENCES service_project (id) ON DELETE CASCADE,
+    signed_up_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, project_id)
+);
+
+-- Show every volunteer sign-up (what the dashboard displays per user)
+SELECT users.name,
+    users.email,
+    service_project.name AS project_name,
+    project_volunteer.signed_up_at
+FROM project_volunteer
+    JOIN users ON project_volunteer.user_id = users.user_id
+    JOIN service_project ON project_volunteer.project_id = service_project.id
+ORDER BY users.name,
+    service_project.event_date;

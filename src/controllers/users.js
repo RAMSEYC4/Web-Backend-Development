@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { createUser, authenticateUser, getAllUsers } from "../models/users.js";
+import { getProjectsForVolunteer } from "../models/volunteers.js";
 
 const showUserRegistrationForm = (req, res) => {
   res.render("register", { title: "Register" });
@@ -94,13 +95,16 @@ const requireRole = (roleName) => {
   };
 };
 
-const showDashboard = (req, res) => {
+const showDashboard = async (req, res) => {
   const user = req.session.user;
+  // The projects this user has signed up to volunteer for.
+  const volunteerProjects = await getProjectsForVolunteer(user.user_id);
   res.render("dashboard", {
     title: "Dashboard",
     name: user.name,
     email: user.email,
     role: user.role_name,
+    volunteerProjects,
   });
 };
 

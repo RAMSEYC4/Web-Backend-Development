@@ -6,6 +6,7 @@ import {
 } from "../models/projects.js";
 import { getCategoriesForProject } from "../models/categories.js";
 import { getAllOrganizations } from "../models/organizations.js";
+import { isUserVolunteer } from "../models/volunteers.js";
 
 import { body, validationResult } from "express-validator";
 
@@ -51,8 +52,16 @@ const projectDetailsPage = async (req, res, next) => {
     return next(err);
   }
   const categories = await getCategoriesForProject(id);
+
+  // Only logged-in users see the volunteer options, so the lookup is only
+  // needed when somebody is actually signed in.
+  let isVolunteer = false;
+  if (req.session && req.session.user) {
+    isVolunteer = await isUserVolunteer(req.session.user.user_id, id);
+  }
+
   const title = project.name;
-  res.render("project-details", { title, project, categories });
+  res.render("project-details", { title, project, categories, isVolunteer });
 };
 
 const showNewProjectForm = async (req, res) => {

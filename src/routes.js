@@ -42,6 +42,10 @@ import {
   showDashboard,
   showUserPage,
 } from "./controllers/users.js";
+import {
+  processVolunteerSignup,
+  processVolunteerRemoval,
+} from "./controllers/volunteers.js";
 
 const router = express.Router();
 
@@ -139,5 +143,15 @@ router.get("/dashboard", requireLogin, showDashboard);
 
 // Protected users route - admins only
 router.get("/users", requireLogin, requireRole("admin"), showUserPage);
+
+// Volunteer sign-up routes - logged-in users only. Both change data, so they
+// are POST routes guarded by requireLogin and cannot be reached by simply
+// typing a URL while logged out.
+router.post("/volunteer/:projectId", requireLogin, processVolunteerSignup);
+router.post(
+  "/remove-volunteer/:projectId",
+  requireLogin,
+  processVolunteerRemoval,
+);
 
 export default router;

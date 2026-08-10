@@ -232,3 +232,67 @@ input[type="submit"]:hover,
 input[type="submit"]:focus {
     background-color: #063d78;
 }
+
+/* ---------- Volunteer sign-ups ---------- */
+
+/* A form that sits inside a card or paragraph rather than being the page's
+   main form, so it drops the white panel styling above. */
+.inline-form {
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    max-width: none;
+}
+
+/* A secondary action styled to read as a link instead of a solid button. */
+.link-button {
+    background: none;
+    color: #0b5aad;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: normal;
+    text-decoration: underline;
+}
+
+.link-button:hover,
+.link-button:focus {
+    background: none;
+    color: #8a1c12;
+}
+
+.volunteer-panel {
+    background-color: #ffffff;
+    border-radius: 8px;
+    border-left: 4px solid #0b5aad;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    padding: 16px 20px;
+}
+
+.volunteer-panel p {
+    margin-top: 0;
+}
+
+.volunteer-panel--active {
+    border-left-color: #1c6b32;
+}
+
+.volunteer-status {
+    color: #1c6b32;
+    font-weight: bold;
+}
+
+/* Dashboard list of the projects a user has volunteered for. */
+.volunteer-item {
+    justify-content: space-between;
+}
+
+.volunteer-item__details a {
+    font-weight: bold;
+}
+
+.volunteer-item__meta {
+    margin: 4px 0 0;
+    color: #5a6b7b;
+    font-size: 0.9rem;
+}
